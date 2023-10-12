@@ -1,2 +1,3 @@
 --  a SQL script that creates a table users
-CREATE TABLE users( id int NOT NULL AUTO_INCREMENT, email varchar(255), name varchar(255), PRIMARY KEY (ID), UNIQUE (email) );
+DROP TABLE IF EXISTS users;
+CREATE TABLE users( id int NOT NULL AUTO_INCREMENT PRIMARY KEY, email varchar(255) UNIQUE, name varchar(255) );
