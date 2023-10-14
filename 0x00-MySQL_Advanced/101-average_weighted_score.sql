@@ -4,14 +4,6 @@ DROP PROCEDURE IF EXISTS ComputeAverageWeightedScoreForUsers;
 delimiter |
 CREATE PROCEDURE ComputeAverageWeightedScoreForUsers ()
 BEGIN
-    SELECT SUM(corrections.score * projects.weight) AS total_weight, SUM(projects.weight) AS total_score_weight
-	FROM corrections
-	INNER JOIN users
-	    ON corrections.user_id = users.id
-	JOIN projects
-	    ON corrections.project_id = projects.id
-	GROUP BY corrections.user_id;
-
     DROP TABLE IF EXISTS average;
     CREATE TABLE average (
         user_id INT NOT NULL,
