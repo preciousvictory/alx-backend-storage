@@ -14,4 +14,4 @@ def schools_by_topic(mongo_collection, topic):
             },
         },
     }
-    return  [doc for doc in mongo_collection.find({'topic': topic_filter})]
+    return  [doc for doc in mongo_collection.find(topic_filter)]
