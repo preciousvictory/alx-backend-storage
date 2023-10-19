@@ -18,7 +18,7 @@ class Cache():
         """store method
         """
         key = str(uuid.uuid4())
-        self._redis.set(key, data)
+        self._redis.mset({key: data})
         return key
 
     def get(self, key: str, fn: Optional[Callable] = None) -> Any:
