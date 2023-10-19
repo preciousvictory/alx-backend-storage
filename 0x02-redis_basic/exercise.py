@@ -9,6 +9,7 @@ from functools import wraps
 
 
 def count_calls(method: Callable) -> Callable:
+    """ Count calls decorator for Cache class """
     key = method.__qualname__
 
     @wraps(method)
@@ -18,6 +19,20 @@ def count_calls(method: Callable) -> Callable:
         return method(self, *args, **kwargs)
     return wrapper
 
+def call_history(method: Callable) -> Callable:
+    """call_history decorator to store the history of inputs and outputs
+    for a particular function."""
+
+    @wraps(method)
+    def wrapper(self, *args):
+        """ call history"""
+        self._redis.rpush(f'{method.__qualname__}:inputs', str(args))
+        output = method(self, *args)
+        self._redis.rpush(f'{method.__qualname__}:outputs', output)
+        return output
+    return wrapper
+
+
 class Cache():
     def __init__(self):
         """Initializing class
@@ -26,6 +41,7 @@ class Cache():
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, int, bytes, float]) -> str:
         """store method
         """
