@@ -32,10 +32,15 @@ def call_history(method: Callable) -> Callable:
         return output
     return wrapper
 
-def replay(fn: Callable):
+def replay(fn: Callable) -> None:
     """  display the history of calls of a particular function.
     """
-    client = redis.Redis()
+    if fn is None or not hasattr(fn, '__self__'):
+        return
+    client = getattr(fn.__self__, '_redis', None)
+    if not isinstance(client, redis.Redis):
+        return
+
     calls = client.get(fn.__qualname__).decode('utf-8')
 
     inputs = client.lrange("{}:inputs".format(fn.__qualname__), 0, -1)
