@@ -21,7 +21,7 @@ def cache(method: Callable) -> Callable:
             return result.decode('utf-8')
 
         resp = method(url)
-        client.set(f'{url}', resp, 10)
+        client.setex(f"result:{url}", 10, resp)
         return resp
     return wrapper
 
