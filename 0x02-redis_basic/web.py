@@ -5,6 +5,8 @@ import requests
 from typing import Callable
 from functools import wraps
 
+client = redis.Redis()
+
 
 def cache(method: Callable) -> Callable:
     '''Caches the output of fetched data.
@@ -13,7 +15,6 @@ def cache(method: Callable) -> Callable:
     def wrapper(url: str) -> str:
         '''The wrapper function for caching the output.
         '''
-        client = redis.Redis()
         client.incr(f'count:{url}')
         result = client.get(f'result:{url}')
         if result:
@@ -24,8 +25,10 @@ def cache(method: Callable) -> Callable:
         return resp
     return wrapper
 
+
 @cache
 def get_page(url: str) -> str:
-    """uses the requests module to obtain the HTML content of a particular URL and returns it.
+    """uses the requests module to obtain the HTML content of a
+    particular URL and returns it.
     """
     return requests.get(url).text
