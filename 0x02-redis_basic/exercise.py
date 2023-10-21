@@ -60,7 +60,7 @@ class Cache():
 
     @count_calls
     @call_history
-    def store(self, data: Union[str, int, bytes, float]) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """store method
         """
         key = str(uuid.uuid4())
