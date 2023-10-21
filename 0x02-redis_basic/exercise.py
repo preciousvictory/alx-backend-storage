@@ -52,8 +52,8 @@ def replay(fn: Callable) -> None:
     for input, output in zip(inputs, outputs):
         print('{}(*{}) -> {}'.format(
             fn.__qualname__,
-            inputs.decode("utf-8"),
-            outputs
+            input.decode("utf-8"),
+            output
         ))
 
 
